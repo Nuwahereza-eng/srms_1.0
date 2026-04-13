@@ -1,0 +1,89 @@
+﻿@import url('karla.css');
+
+:root {
+--bg: #f7f9fc;
+--text: #1f2937;
+--muted: #6b7280;
+--accent: #45619d;
+--error: #ef4444;
+--radius: 14px;
+font-family: 'Karla', sans-serif !important;
+}
+
+body {
+background: var(--bg);
+margin: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+padding: 1rem;
+}
+
+.container {
+background: #fff;
+border-radius: var(--radius);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+padding: 4rem 5rem;
+max-width: 480px;
+width: 100%;
+}
+
+.code {
+font-size: 5rem;
+font-weight: 700;
+color: var(--error);
+margin: 0;
+}
+
+h1 {
+font-size: 1.75rem;
+margin: 0.5rem 0;
+color: var(--text);
+}
+
+p {
+color: var(--muted);
+margin: 1rem 0 2rem;
+line-height: 1.5;
+}
+
+.actions {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 1rem;
+}
+
+a {
+text-decoration: none;
+padding: 0.6rem 1.4rem;
+border-radius: 8px;
+font-weight: 600;
+transition: background 0.2s, color 0.2s;
+}
+
+a.home {
+background: var(--accent);
+color: #fff;
+}
+
+a.home:hover {
+background: #1d4ed8;
+}
+
+a.back {
+border: 1px solid var(--accent);
+color: var(--accent);
+}
+
+a.back:hover {
+background: var(--accent);
+color: #fff;
+}
+
+footer {
+margin-top: 2rem;
+font-size: 0.85rem;
+color: var(--muted);
+}

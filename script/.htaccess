@@ -1,0 +1,31 @@
+RewriteEngine on
+# directory browsing
+Options All -Indexes
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+php_flag output_buffering on
+
+RewriteRule ^staff/login/?$     staff_login.php [QSA,L]
+RewriteRule ^staff/reset_pw/?$     staff_reset_pw.php [QSA,L]
+
+<Files ".env">
+Order allow,deny
+Deny from all
+</Files>
+
+<Files ".pdf">
+Order allow,deny
+Deny from all
+</Files>
+
+<Files ".doc">
+Order allow,deny
+Deny from all
+</Files>
+
+<IfModule mod_headers.c>
+Header set X-Frame-Options "DENY"
+Header set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+Header set X-Content-Type-Options "nosniff"
+</IfModule>
