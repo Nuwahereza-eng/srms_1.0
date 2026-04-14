@@ -3,11 +3,11 @@ class database {
     private static $pdo;
     public static function connect() {
 
-		$db_host = getenv("DB_HOST");
-		$db_port = getenv("DB_PORT");
-		$db_user = getenv("DB_USERNAME");
-		$db_pass = getenv("DB_PASSWORD");
-		$db_name = getenv("DB_NAME");
+		$db_host = $_ENV["DB_HOST"] ?? getenv("DB_HOST");
+		$db_port = $_ENV["DB_PORT"] ?? getenv("DB_PORT");
+		$db_user = $_ENV["DB_USERNAME"] ?? getenv("DB_USERNAME");
+		$db_pass = $_ENV["DB_PASSWORD"] ?? getenv("DB_PASSWORD");
+		$db_name = $_ENV["DB_NAME"] ?? getenv("DB_NAME");
 
         if (!self::$pdo) {
             self::$pdo = new PDO("mysql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);

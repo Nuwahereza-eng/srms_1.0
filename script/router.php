@@ -8,6 +8,12 @@
 
 $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
+// .htaccess enables output_buffering; the built-in server doesn't read
+// .htaccess, so we enable it here so header() calls work after output.
+if (!ini_get('output_buffering')) {
+    ob_start();
+}
+
 // --- Explicit rewrites (mirrors .htaccess) ---
 $rewrites = [
     '/staff/login'    => '/staff_login.php',
@@ -24,11 +30,27 @@ foreach ($rewrites as $pattern => $target) {
 // --- Helper: require a PHP file with the correct working directory ---
 // Apache sets CWD to the script's directory; replicate that behaviour here
 // so that chdir('../') and relative require_once calls inside the scripts work.
+// We also fix SCRIPT_NAME / PHP_SELF so that CSRF action_name() resolves to
+// the real target file instead of "router.php".
 function routeRequire(string $file): void {
-    $origDir = getcwd();
+    $origDir        = getcwd();
+    $origScript     = $_SERVER['SCRIPT_NAME']     ?? '';
+    $origPhpSelf    = $_SERVER['PHP_SELF']         ?? '';
+    $origFilename   = $_SERVER['SCRIPT_FILENAME']  ?? '';
+
+    // Make SCRIPT_NAME look like the target file (relative to docroot)
+    $relative = '/' . ltrim(str_replace(__DIR__, '', $file), '/');
+    $_SERVER['SCRIPT_NAME']     = $relative;
+    $_SERVER['PHP_SELF']        = $relative;
+    $_SERVER['SCRIPT_FILENAME'] = $file;
+
     chdir(dirname($file));
     require $file;
     chdir($origDir);
+
+    $_SERVER['SCRIPT_NAME']     = $origScript;
+    $_SERVER['PHP_SELF']        = $origPhpSelf;
+    $_SERVER['SCRIPT_FILENAME'] = $origFilename;
 }
 
 // --- Serve existing static files directly (css, js, images, fonts, etc.) ---

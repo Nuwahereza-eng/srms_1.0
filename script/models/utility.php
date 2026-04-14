@@ -7,7 +7,7 @@ $lines = explode("\n",$env);
 
 foreach($lines as $line){
 preg_match("/([^#]+)\=(.*)/",$line,$matches);
-if(isset($matches[2])){ putenv(trim($line)); }
+if(isset($matches[1]) && isset($matches[2])){ $_ENV[trim($matches[1])] = trim($matches[2]); }
 }
 }
 

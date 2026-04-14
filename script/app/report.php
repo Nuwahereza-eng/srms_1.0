@@ -33,6 +33,12 @@ header("location:results");
 
 $serial = $sn->show($profile['reg_no'], $madarasa_aliyofanyia_mtihani[0]['class_id'], $_GET['term']);
 
+if (empty($serial)) {
+$serial_no = $utility->generateSerialSecure();
+$sn->store($profile['reg_no'], $madarasa_aliyofanyia_mtihani[0]['class_id'], $_GET['term'], $serial_no);
+$serial = $sn->show($profile['reg_no'], $madarasa_aliyofanyia_mtihani[0]['class_id'], $_GET['term']);
+}
+
 if ((isset($_SERVER['HTTPS']) &&   (($_SERVER['HTTPS'] == 'on'))) || (isset($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] == 443))
 {
 $actual_link = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -46,6 +52,7 @@ $signature = $serial['serial_no'];
 $actual_link = str_replace("app/report.php","documents?signature=$signature",$actual_link);
 
 $students_in_class = [];
+$matokeo = [];
 
 $full_matokeo = $students->runQuery("SELECT * FROM examination_results
   WHERE class_id = ? AND term = ?", array($madarasa_aliyofanyia_mtihani[0]['class_id'], $_GET['term']));
@@ -55,7 +62,8 @@ foreach ($full_matokeo as $key => $value) {
 
 $reg_no = $value["reg_no"];
 
-$results = unserialize($value["results"]);
+$results = !empty($value["results"]) ? @unserialize($value["results"]) : [];
+if (!is_array($results)) $results = [];
 
 foreach ($results as $key1 => $value1) {
 
@@ -90,13 +98,18 @@ array_push($masomo_yanayohesabiwa2, $value__sub['subject_id']);
 }
 
 
-$award_method = $classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['award_method'];
-$scale_ya_grading = unserialize($grading_systems->show($classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['grading_system'])['details']);
+$class_data_r = $classes->show($madarasa_aliyofanyia_mtihani[0]['class_id']);
+$award_method = $class_data_r ? $class_data_r['award_method'] : 'AVERAGE';
+$grading_raw_r = ($class_data_r && !empty($class_data_r['grading_system'])) ? $grading_systems->show($class_data_r['grading_system']) : false;
+$scale_ya_grading = ($grading_raw_r && !empty($grading_raw_r['details'])) ? @unserialize($grading_raw_r['details']) : [];
+if (!is_array($scale_ya_grading)) $scale_ya_grading = [];
 
 if ($award_method == 'DIVISION') {
 
-$scale_ya_division = unserialize($division_systems->show($classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['division_system'])['details']);
-$order_ya_division =  $division_systems->show($classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['division_system'])['points_sorting'];
+$div_raw_r = ($class_data_r && !empty($class_data_r['division_system'])) ? $division_systems->show($class_data_r['division_system']) : false;
+$scale_ya_division = ($div_raw_r && !empty($div_raw_r['details'])) ? @unserialize($div_raw_r['details']) : [];
+if (!is_array($scale_ya_division)) $scale_ya_division = [];
+$order_ya_division = $div_raw_r ? ($div_raw_r['points_sorting'] ?? 'Descending') : 'Descending';
 
 $merged = $utility->groupStudentResultsWithRanking($matokeo, $students_in_class, $masomo_yanayohesabiwa2, $scale_ya_division, $scale_ya_grading, $sortBy = 'points', $order_ya_division);
 
@@ -213,8 +226,8 @@ $html = '<table width="100%"  style="font-size:10px;">
 <div class="student-info">
 <b>Name:</b> '.$profile['first_name'].' '.$profile['last_name'].'<br>
 <b>Student ID:</b> '.$profile['reg_no'].'<br>
-<b>Class:</b> '.$classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['name'].'<br>
-<b>Term:</b> '.$terms->show($_GET['term'])['name'].'
+<b>Class:</b> '.($class_data_r ? $class_data_r['name'] : '').'<br>
+<b>Term:</b> '.($terms->show($_GET['term']) ? $terms->show($_GET['term'])['name'] : '').'
 </div>
 </td>
 <td width="25%">
@@ -241,7 +254,10 @@ $pdf->write2DBarcode($actual_link, 'QRCODE,H', 264, $y, 25, 25, $style, 'N');
 
 foreach ($madarasa_aliyofanyia_mtihani as $key => $value) {
 
-$scale_ya_grading = unserialize($grading_systems->show($classes->show($value['class_id'])['grading_system'])['details']);
+$inner_cls = $classes->show($value['class_id']);
+$inner_grd = ($inner_cls && !empty($inner_cls['grading_system'])) ? $grading_systems->show($inner_cls['grading_system']) : false;
+$scale_ya_grading = ($inner_grd && !empty($inner_grd['details'])) ? @unserialize($inner_grd['details']) : [];
+if (!is_array($scale_ya_grading)) $scale_ya_grading = [];
 
 $masomo_anayo_soma = $students->runQuery("SELECT d.id, d.code, d.name, d.is_principal, d.status FROM subject_combinations a JOIN classes b ON a.class_id = b.id
 JOIN programmes c ON b.programme = c.id JOIN subjects d ON a.subject_id = d.id WHERE a.class_id = ?", array($value['class_id']));
@@ -256,7 +272,9 @@ foreach ($tem_alizofanyia_mtihani_kwenye_darasa as $key2 => $value2) {
 $obtained_marks = 0;
 $obtained_points = [];
 
-$ca_za_tem = unserialize($students->runQuery("SELECT ca FROM academic_terms WHERE id = ? AND show_results = ?", array($value2['term'], 'YES'))[0]['ca']);
+$ca_row = $students->runQuery("SELECT ca FROM academic_terms WHERE id = ? AND show_results = ?", array($value2['term'], 'YES'));
+$ca_za_tem = (!empty($ca_row[0]['ca'])) ? @unserialize($ca_row[0]['ca']) : [];
+if (!is_array($ca_za_tem)) $ca_za_tem = [];
 
 $tebo = '';
 
@@ -270,7 +288,8 @@ $record = $exams->check_record($profile['reg_no'], $value['class_id'], $value2['
 
 if (!empty($record)) {
 
-$record_2 = unserialize($record['results']);
+$record_2 = !empty($record['results']) ? @unserialize($record['results']) : [];
+if (!is_array($record_2)) $record_2 = [];
 
 if (isset($record_2[$value3['id']])) {
 
@@ -372,7 +391,7 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 
 
-$award_method = $classes->show($madarasa_aliyofanyia_mtihani[0]['class_id'])['award_method'];
+$award_method = $class_data_r ? $class_data_r['award_method'] : 'AVERAGE';
 
 
 
@@ -420,7 +439,11 @@ font-size:9pt;
 
 }else{
 
-$scale_ya_division = unserialize($division_systems->show($classes->show($value['class_id'])['division_system'])['details']);
+$div_cls = $classes->show($value['class_id']);
+$div_sys_r = ($div_cls && !empty($div_cls['division_system'])) ? $division_systems->show($div_cls['division_system']) : false;
+$scale_ya_division = ($div_sys_r && !empty($div_sys_r['details'])) ? @unserialize($div_sys_r['details']) : [];
+if (!is_array($scale_ya_division)) $scale_ya_division = [];
+if (!isset($obtained_points) || !is_array($obtained_points)) $obtained_points = [];
 $division = $utility->getDivisionResult($obtained_points, $scale_ya_division);
 
 $teachers_comment = $division['teacher_comment'];

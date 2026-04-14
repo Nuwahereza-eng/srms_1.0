@@ -236,7 +236,7 @@ body {
     gap: 10px;
 }
 .security-alert h1:before {
-    content: '🛡️';
+    content: '';
     font-size: 1.3rem;
 }
 .security-alert p {

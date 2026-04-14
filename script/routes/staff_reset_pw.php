@@ -102,7 +102,7 @@ padding: 20px;
 </div>
 
 <div class="content">
-<h2>👋Hello '.$account['first_name'].',</h2>
+<h2>Hello '.$account['first_name'].',</h2>
 
 <p>It seems that you’ve forgotten your password.</p>
 

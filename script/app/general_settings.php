@@ -23,7 +23,7 @@ $timezone_list = $timezone->index();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title><?php echo $info['name'].' - General Settings'; ?></title>
 <meta name="description" content="Students Results Management System">
-<meta name="author" content="Bwire Mashauri">
+<meta name="author" content="Sserwanga Abdul">
 <meta name="robots" content="index, follow">
 <base href="../">
 <link rel="shortcut icon" href="storage/images/misc/<?php echo $info['icon']; ?>">

@@ -22,7 +22,7 @@ $page = $utility->get_page();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title><?php echo $info['name'].' - Subjects'; ?></title>
 <meta name="description" content="Students Results Management System">
-<meta name="author" content="Bwire Mashauri">
+<meta name="author" content="Sserwanga Abdul">
 <meta name="robots" content="index, follow">
 <base href="../">
 <link rel="shortcut icon" href="storage/images/misc/<?php echo $info['icon']; ?>">
@@ -176,7 +176,6 @@ Download excel template from <a download href="storage/templates/import_subjects
 <th>Code</th>
 <th>Name</th>
 <th>Principal Subject</th>
-<th>Subject Type</th>
 <th>Status</th>
 </tr>
 </thead>

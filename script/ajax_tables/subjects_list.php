@@ -119,24 +119,8 @@ break;
 ),
 
 array(
-'db'        => 'subject_type',
-'dt'        => 3,
-'formatter' => function( $d, $row ) {
-switch ($d) {
-case 'COMPULSORY':
-return '<span class="badge bg-success">COMPULSORY</span>';
-break;
-
-default:
-return '<span class="badge bg-primary">OPTIONAL</span>';
-break;
-}
-}
-),
-
-array(
 'db'        => 'status',
-'dt'        => 4,
+'dt'        => 3,
 'formatter' => function( $d, $row ) {
 switch ($d) {
 case 'ENABLED':
@@ -154,10 +138,10 @@ break;
 
 
 $sql_details = array(
-'user' => getenv("DB_USERNAME"),
-'pass' => getenv("DB_PASSWORD"),
-'db'   => getenv("DB_NAME"),
-'host' => getenv("DB_HOST")
+'user' => ($_ENV["DB_USERNAME"] ?? getenv("DB_USERNAME")),
+'pass' => ($_ENV["DB_PASSWORD"] ?? getenv("DB_PASSWORD")),
+'db'   => ($_ENV["DB_NAME"] ?? getenv("DB_NAME")),
+'host' => ($_ENV["DB_HOST"] ?? getenv("DB_HOST"))
 ,'charset' => 'utf8'
 );
 

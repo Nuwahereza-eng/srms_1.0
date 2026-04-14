@@ -13,7 +13,7 @@ if (empty($staff->account($sanitezed_data['email']))) {
 $data['first_name'] = $sanitezed_data['first_name'];
 $data['last_name'] = $sanitezed_data['last_name'];
 $data['gender'] = $sanitezed_data['gender'];
-$data['email'] = $$sanitezed_data['email'];
+$data['email'] = $sanitezed_data['email'];
 $data['hashed_pw'] = password_hash(strtoupper($data['first_name'].$data['last_name']), PASSWORD_BCRYPT);
 $data['account_status'] = $sanitezed_data['account_status'];
 

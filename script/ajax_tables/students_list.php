@@ -82,10 +82,10 @@ return "
 
 
 $sql_details = array(
-'user' => getenv("DB_USERNAME"),
-'pass' => getenv("DB_PASSWORD"),
-'db'   => getenv("DB_NAME"),
-'host' => getenv("DB_HOST")
+'user' => ($_ENV["DB_USERNAME"] ?? getenv("DB_USERNAME")),
+'pass' => ($_ENV["DB_PASSWORD"] ?? getenv("DB_PASSWORD")),
+'db'   => ($_ENV["DB_NAME"] ?? getenv("DB_NAME")),
+'host' => ($_ENV["DB_HOST"] ?? getenv("DB_HOST"))
 ,'charset' => 'utf8'
 );
 
