@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title><?php echo $info['name'].' - Results Verification'; ?></title>
 <meta name="description" content="Students Results Management System">
-<meta name="author" content="Sserwanga Abdul">
+<meta name="author" content="Abdul & Moses">
 <meta name="robots" content="index, follow">
 <link rel="shortcut icon" href="storage/images/misc/<?php echo $info['icon']; ?>">
 <link rel="stylesheet" id="css-main" href="assets/css/core.css"><?php echo $info['theme'] !== '0' ? '<link type="text/css" rel="stylesheet" id="css-theme" href="assets/css/themes/'.$info['theme'].'.css">' : '' ; ?>

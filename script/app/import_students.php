@@ -23,7 +23,7 @@ $class_list = $classes->index();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title><?php echo $info['name'].' - Import Students'; ?></title>
 <meta name="description" content="Students Results Management System">
-<meta name="author" content="Sserwanga Abdul">
+<meta name="author" content="Abdul & Moses">
 <meta name="robots" content="index, follow">
 <base href="../">
 <link rel="shortcut icon" href="storage/images/misc/<?php echo $info['icon']; ?>">

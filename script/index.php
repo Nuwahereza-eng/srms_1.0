@@ -10,7 +10,7 @@ $info = $school->index();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title><?php echo $info['name'].' - Student Login'; ?></title>
 <meta name="description" content="Students Results Management System">
-<meta name="author" content="Sserwanga Abdul">
+<meta name="author" content="Abdul & Moses">
 <meta name="robots" content="index, follow">
 <link rel="shortcut icon" href="storage/images/misc/<?php echo $info['icon']; ?>">
 <link rel="stylesheet" id="css-main" href="assets/css/core.css"><?php echo $info['theme'] !== '0' ? '<link type="text/css" rel="stylesheet" id="css-theme" href="assets/css/themes/'.$info['theme'].'.css">' : '' ; ?>
@@ -75,29 +75,30 @@ $info = $school->index();
     .login-card-body {
         padding: 28px 32px 24px;
     }
-    .login-card-body .form-label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #4a5568;
-        margin-bottom: 4px;
-    }
+    .login-card { background: #fff !important; color: #343a40 !important; }
+    .login-card-body .form-label { font-size: 0.8rem; font-weight: 600; color: #4a5568 !important; margin-bottom: 4px; }
     .login-card-body .form-control {
         border-radius: 8px;
         font-size: 0.85rem;
         padding: 9px 14px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #e2e8f0 !important;
+        background-color: #fff !important;
+        color: #343a40 !important;
         transition: border-color 0.2s, box-shadow 0.2s;
     }
+    .login-card-body .form-control::placeholder { color: #a0aec0 !important; }
     .login-card-body .form-control:focus {
-        border-color: #0665d0;
+        border-color: #0665d0 !important;
         box-shadow: 0 0 0 3px rgba(6,101,208,0.12);
+        background-color: #fff !important;
+        color: #343a40 !important;
     }
     .login-card-body .input-group-text {
         border-radius: 0 8px 8px 0;
-        background: #f7fafc;
-        border: 1px solid #e2e8f0;
+        background: #f7fafc !important;
+        border: 1px solid #e2e8f0 !important;
         border-left: 0;
-        color: #a0aec0;
+        color: #a0aec0 !important;
     }
     .login-card-body .btn-primary {
         border-radius: 8px;
@@ -140,6 +141,7 @@ $info = $school->index();
 </head>
 <body>
 <div id="page-loader" class="show"></div>
+<div id="page-container" style="display:none"><nav id="sidebar"></nav><header id="page-header"></header><main id="main-container"></main></div>
 
 <div class="login-bg">
     <div class="login-card">
@@ -184,7 +186,7 @@ $info = $school->index();
     </div>
     <div class="login-footer">
         <span>&copy; <?php echo date('Y'); ?> <?php echo $info['name']; ?></span> &middot;
-        <span>Developed by <a>Sserwanga Abdul</a></span>
+        <span>Developed by <a>Abdul & Moses</a></span>
     </div>
 </div>
 
