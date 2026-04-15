@@ -44,9 +44,8 @@ break;
 array(
 'db'        => 'id',
 'dt'        => 2,
-'formatter' => function( $d, $row ) {
+'formatter' => function( $d, $row ) use ($csrf) {
 
-$csrf = $GLOBALS['csrf'];
 $e = $csrf['token'];
 $f = $csrf['formId'];
 $l = 'Delete Grading System?';
@@ -78,6 +77,6 @@ SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $orderColumn, $
 );
 
 }else{
-
+echo json_encode(['draw'=>intval($_GET['draw']??0),'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
 }
 ?>
